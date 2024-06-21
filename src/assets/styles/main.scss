@@ -1,0 +1,112 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+p {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url("../images/bgi.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.container-xxl {
+  max-width: 1440px;
+}
+.container {
+  max-width: 1200px;
+}
+.primary-button {
+  width: 100%;
+  background: linear-gradient(95.57deg, #1d9da0 -37.71%, #7378ee 137.71%);
+  border-radius: 6px;
+  // padding: 16px 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
+  color: #ffffff;
+  border: none;
+  height: 52px;
+  outline: none;
+  transition: all ease 0.5s;
+  &:hover {
+    transition: all ease 0.5s;
+    background: -webkit-linear-gradient(
+      354.43deg,
+      #ff782d -37.71%,
+      #7378ee 137.71%
+    );
+    background: linear-gradient(95.57deg, #ff782d -37.71%, #7378ee 137.71%);
+  }
+}
+.about-button {
+  border: 1px solid #000000;
+  border-radius: 6px;
+  // padding: 16px 0;
+  width: 100%;
+  outline: none;
+  background-color: transparent;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  height: 52px;
+  line-height: 27px;
+  text-align: center;
+  color: #000000;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+.carousel-indicators {
+  /* right: 0; */
+  bottom: 0 !important;
+  left: 5% !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  justify-content: start;
+  button {
+    opacity: 0.2;
+    background-color: #000000 !important;
+    width: 60px !important;
+    &.active {
+      width: 60px;
+      opacity: 1;
+      background-color: #000000;
+    }
+  }
+}
+.table-sm > :not(caption) > * > * {
+  padding: 0.75rem 0.75rem;
+}
+
+.load-anim {
+  animation: loadAnim 1s 1;
+}
+
+@keyframes loadAnim {
+  from {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.swiper-pagination {
+  bottom: 0 !important;
+}

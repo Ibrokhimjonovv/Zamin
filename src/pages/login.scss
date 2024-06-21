@@ -1,0 +1,74 @@
+.signup-container {
+    width: 70% !important;
+    margin-top: 10px;
+    padding-bottom: 20px;
+}
+
+.before-style {
+    display: none;
+}
+
+.otherLoginForm {
+    width: 100%;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+}
+
+.otherLoginForm a {
+    width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e6f0fc;
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 4px 0;
+    transition: all .2s ease;
+    position: relative;
+}
+
+.otherLoginForm a:hover {
+    box-shadow: 0 0 15px #5585d3;
+}
+
+.otherLoginForm a img {
+    width: 35px;
+    height: 35px;
+}
+
+#line {
+    width: 100%;
+    height: 1px;
+    border: 1px solid #e6f0fc;
+}
+
+#or {
+    position: absolute;
+    top: -15px;
+    background-color: #fff;
+    width: 70px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.loginForm {
+    margin-top: 30px;
+}
+
+#googleFormLink {
+    width: 100%;
+    position: relative;
+    transition: all .2s ease;
+}
+
+#googleFormLink:hover {
+    box-shadow: 0 0 15px #5585d3;
+}
+
+.error {
+    margin-top: 17px;
+}

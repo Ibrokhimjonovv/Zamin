@@ -1,0 +1,31 @@
+.sidebar {
+  display: block;
+  //   width: 250px;
+  width: 18%;
+  background-color: #363740;
+  padding: 24px;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  .logo {
+    margin-bottom: 32px;
+  }
+  .sidebar-link {
+    cursor: pointer;
+    display: block;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #929eae;
+    padding: 14px 17px;
+    img {
+      margin-right: 10px;
+    }
+    &.active {
+      background: linear-gradient(95.57deg, #1d9da0 -37.71%, #7378ee 137.71%);
+      border-radius: 8px;
+      color: white;
+    }
+  }
+}

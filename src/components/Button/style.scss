@@ -1,0 +1,160 @@
+$info: #0091ff;
+$warning: #ffb822;
+$success: #34bfa3;
+$danger: #f4516c;
+$metal: #dcdcdc;
+
+.btn {
+	display: inline-block;
+	white-space: nowrap;
+	padding: 14px 30px;
+	cursor: pointer;
+	outline: none;
+	transition: all 0.2s ease;
+	font-size: 16px;
+	min-width: 190px;
+	text-align: center;
+
+	&.btn-sm {
+		padding: 8px 25px;
+		font-size: 12px;
+	}
+
+	&.btn-md {
+		font-size: 14px;
+		padding: 12px 20px;
+	}
+
+	&.btn-xs {
+		font-size: 12px;
+		padding: 3px 20px;
+	}
+
+	&.btn-lg {
+		padding: 12px 90px;
+	}
+
+	&.loading {
+		position: relative;
+		color: transparent !important;
+
+		&:after {
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			background-color: transparent;
+			border: 2px solid transparent;
+			border-top-color: #ffffff;
+			-webkit-animation: 1s spin linear infinite;
+			animation: 0.8s spin linear infinite;
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+		}
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: no-drop;
+	}
+
+	&.btn-info {
+		background: linear-gradient(95.57deg, #1d9da0 -37.71%, #7378ee 137.71%);
+		border: none;
+		outline: none;
+		color: white;
+		transition: all 0.3s;
+		box-shadow: 0 30px 43px rgba(0, 13, 81, 0.25);
+
+		&:hover {
+          transition: all 0.3s;
+          background: linear-gradient(
+				95.57deg,
+				#ff782d -37.71%,
+				#7378ee 137.71%
+			);
+		}
+
+		&:disabled {
+			background-color: $info;
+			border: 1px solid $info;
+		}
+	}
+
+	&.btn-warning {
+		background-color: $warning;
+		border: 1px solid $warning;
+
+		&:hover {
+			background-color: #df9f16;
+			border: 1px solid #df9f16;
+		}
+
+		&:disabled {
+			background-color: $warning;
+			border: 1px solid $warning;
+		}
+	}
+
+	&.btn-success {
+		background-color: $success;
+		border: 1px solid $success;
+
+		&:hover {
+			background-color: #28a58c;
+			border: 1px solid #28a58c;
+		}
+
+		&:disabled {
+			background-color: $success;
+			border: 1px solid $success;
+		}
+	}
+
+	&.btn-danger {
+		background-color: $danger;
+		border: 1px solid $danger;
+
+		&:hover {
+			background-color: #d91f3e;
+			border: 1px solid #d91f3e;
+		}
+
+		&:disabled {
+			background-color: $danger;
+			border: 1px solid $danger;
+		}
+	}
+
+	&.btn-metal {
+		background-color: $metal;
+		border: 1px solid $metal;
+		color: #404040;
+
+		&:hover {
+			background-color: #c8c4c4;
+			border: 1px solid #c8c4c4;
+		}
+
+		&:disabled {
+			background-color: $metal;
+			border: 1px solid $metal;
+			color: #404040;
+		}
+	}
+}
+
+@keyframes spin {
+	from {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}

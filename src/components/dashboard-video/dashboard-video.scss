@@ -1,0 +1,114 @@
+.dashboard-video-card {
+  width: 100%;
+  height: auto;
+  transition: all ease 0.5s;
+  .modal-dialog {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+  }
+  cursor: pointer;
+  &:hover {
+    -webkit-box-shadow: -7px 14px 33px -2px rgba(48, 232, 144, 0.32);
+    -moz-box-shadow: -7px 14px 33px -2px rgba(48, 232, 144, 0.32);
+    box-shadow: -7px 14px 33px -2px rgba(48, 232, 144, 0.32);
+    transition: all ease 0.5s;
+  }
+  .titles-videos {
+    padding: 10px;
+  }
+  .name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    h2 {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 22px;
+      letter-spacing: -0.01em;
+      color: #000000;
+      margin-bottom: 0;
+    }
+  }
+  .img img {
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .star img {
+    width: 15px;
+  }
+  p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    color: #000000;
+    // opacity: 0.3;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 7px;
+
+    img {
+      width: 20px;
+    }
+  }
+  .more {
+    margin-top: 10px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    color: #fff;
+    width: 100%;
+    background-color: #1d9da0;
+    padding: 10px 0;
+    border-radius: 2px;
+  }
+  button {
+    background-color: transparent;
+    border: none; 
+    display: flex;
+    gap: 7px;
+    justify-content: center;
+    align-items: center;
+    
+    img {
+      width: 20px;
+    }
+  }
+}
+
+.video {
+  padding: 5% 1%;
+}
+
+.helperContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .videosNavbar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .videos {
+    margin-top: 10px;
+  }
+
+  #select_form {
+    padding: 5px 12px;
+    cursor: pointer;
+    outline: none;
+
+    #select_form option {
+      cursor: pointer;
+    }
+  }
+}
