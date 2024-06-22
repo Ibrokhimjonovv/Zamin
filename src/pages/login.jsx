@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
 import './login.scss';
 import Logo from '../assets/images/logo-admin.svg';
 import Form from 'react-bootstrap/Form';
@@ -8,9 +8,11 @@ import { useNavigate } from 'react-router';
 import Spinner from '../components/loading/loading';
 import { URL } from '../hooks/fetchdata';
 
-// Images
-import googleIcon from '../assets/images/login/googleIcon.png'
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import {jwtDecode} from 'jwt-decode';  // Correct import
 
+// Images
+import googleIcon from '../assets/images/login/googleIcon.png';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -20,45 +22,71 @@ const Login = () => {
   const { setToken } = useUserContext();
   const navigate = useNavigate();
 
+  const [user, setUser] = useState(null);
+
+  const onSuccess = (response) => {
+    console.log('Login Success:', response);
+    const decoded = jwtDecode(response.credential);
+    setUser(decoded); // Save the decoded user information
+
+    // Extract and store the access token
+    const accessToken = response.credential;
+    localStorage.setItem('accessToken', accessToken);
+    setToken(accessToken);
+
+    navigate('/');
+  };
+
+  const onFailure = (error) => {
+    console.log('Login Failed:', error);
+  };
+
+  const handleLogout = () => {
+    googleLogout();
+    setUser(null); // Clear the user information
+    localStorage.removeItem('accessToken');
+    console.log('Logout Success');
+  };
+
   async function SignInHandler(e) {
     e.preventDefault();
     setLoading(true);
 
     try {
-        const response = await fetch(`${URL}/api/token/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ phone_number: phoneNumber, password: password }),
-        });
+      const response = await fetch(`${URL}/api/token/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ phone_number: phoneNumber, password: password }),
+      });
 
-        const data = await response.json();
-        setLoading(false);
+      const data = await response.json();
+      setLoading(false);
 
+      console.log(data);
+
+      if (response.status === 200) {
+        localStorage.setItem('accessToken', data.access);
+        setToken(data.token);
         console.log(data);
 
-        if (response.status === 200) {
-            localStorage.setItem('accessToken', data.access);
-            setToken(data.token);
-            console.log(data)
-
-            if (data.is_staff) {
-                console.log("User is staff or superuser.");
-                navigate('/dashboard/');
-            } else {
-                console.log("User is not staff.");
-                navigate('/');
-            }
+        if (data.is_staff) {
+          console.log('User is staff or superuser.');
+          navigate('/dashboard/');
         } else {
-            setError(data.detail || 'Login failed. Please check your credentials.');
+          console.log('User is not staff.');
+          navigate('/');
         }
+      } else {
+        setError(data.detail || 'Login failed. Please check your credentials.');
+      }
     } catch (error) {
-        console.error('Error:', error);
-        setLoading(false);
-        setError('An error occurred. Please try again later.');
+      console.error('Error:', error);
+      setLoading(false);
+      setError('An error occurred. Please try again later.');
     }
-}
+  }
 
   return (
     <>
@@ -67,9 +95,9 @@ const Login = () => {
         <Link to="/">
           <img
             style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "0 auto",
+              display: 'flex',
+              justifyContent: 'center',
+              margin: '0 auto',
             }}
             src={Logo}
             alt=""
@@ -100,14 +128,15 @@ const Login = () => {
             Kirish
           </button>
           <div className="signupContainer">
-          Akkountingiz yo'qmi? <Link to="/signup">Ro'yxatdan o'tish</Link>
+            Akkountingiz yo'qmi? <Link to="/signup">Ro'yxatdan o'tish</Link>
           </div>
           <div className="otherLoginForm loginForm">
             <span id="line"></span>
             <span id="or">yoki</span>
-            <Link to="#google" id='googleFormLink'>
-                <img src={googleIcon} alt="" />
-            </Link>
+            <GoogleLogin
+              onSuccess={onSuccess}
+              onFailure={onFailure}
+            />
           </div>
           {error && <div className="error">{error}</div>}
         </Form>
