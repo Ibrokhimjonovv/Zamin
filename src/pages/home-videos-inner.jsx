@@ -171,7 +171,7 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                       </div>
                       <div className={`a ${openIndexes.includes(index) ? 'a-opened' : ''}`}>
                         {titlesLinks
-                          .filter(link => link.course_department === title.id) // <- Change is here
+                          .filter(link => link.course_department === title.id)
                           .map((link, idx) => (
                             <Link to="#" key={idx} onClick={() => { setVideoSrc(`${link.video_link}`); handleOpen(); }}>
                               <div> <p><span>{idx + 1}</span> {link.title} </p> <p>10:25:44</p></div>
@@ -280,7 +280,7 @@ const DashboardVideoCard = ({ data }) => {
         </div>
         <div className="titles-videos">
           <div className="name">
-            <h2>{data?.title}</h2>
+            {/* <h2>{data?.title}</h2> */}
           </div>
         </div>
       </div>

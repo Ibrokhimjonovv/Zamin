@@ -1,5 +1,5 @@
-import "swiper/css";
-import "swiper/css/pagination";
+// import "swiper/css";
+// import "swiper/css/pagination";
 import "./home.scss";
 import "./zamineco.scss";
 import ZaminImg from "../assets/images/logo12.png";

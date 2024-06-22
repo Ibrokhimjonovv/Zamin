@@ -1,7 +1,7 @@
-export const URL = "http://edurent.uz";
+export const URL = "http://bk.zamineducation.uz";
 
 export function PostData(endpoint, data, token) {
-    return fetch(`${URL + endpoint}?f   ormat=json`, {
+    return fetch(`${URL + endpoint}?format=json`, {
         method: "POST",
         headers: {
             Authorization: "Bearer " + token,

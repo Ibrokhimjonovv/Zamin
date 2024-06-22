@@ -99,6 +99,9 @@ const Login = () => {
           <button className="primary-button" variant="primary" type="submit">
             Kirish
           </button>
+          <div className="signupContainer">
+          Akkountingiz yo'qmi? <Link to="/signup">Ro'yxatdan o'tish</Link>
+          </div>
           <div className="otherLoginForm loginForm">
             <span id="line"></span>
             <span id="or">yoki</span>

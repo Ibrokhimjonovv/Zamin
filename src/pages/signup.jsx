@@ -1,34 +1,30 @@
 import "./login.scss";
-import Logo from "../assets/images/logo-admin.svg";
+import Logo from "../assets/images/log.png";
 import Form from "react-bootstrap/Form";
-import { PostData } from "../hooks/fetchdata";
+import { PostData, URL } from "../hooks/fetchdata";
 import { useState } from "react";
 import { useUserContext } from "../contexts/users-context";
 import { BounceLoader } from "react-spinners";
 import { data, region } from "../data/data";
-import { Button} from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { Link } from 'react-router-dom'
-// Images
-import googleIcon from '../assets/images/login/googleIcon.png'
+import { Link } from 'react-router-dom';
+import googleIcon from '../assets/images/login/googleIcon.png';
 
 const Signup = () => {
   const { token, setLoading, loading } = useUserContext();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [middleName, setMiddleName] = useState();
-  const [ password, setPassword ] = useState();
-  const [ rePassword, setRePassword ] = useState();
-  // const [agree, setAgree] = useState(true);
-  const [dateOfBirth, setDateOfBirth] = useState();
-  const [cityId, setCityId] = useState();
-  const [you, setYou] = useState();
-  const [you2, setYou2] = useState();
-  const [provinceId, setProvinceId] = useState();
-  const [phone, setPhone] = useState();
-  const [error, setError] = useState();
-
-  // const navigate = useNavigate()
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [cityId, setCityId] = useState(null);
+  const [you, setYou] = useState('');
+  const [you2, setYou2] = useState('');
+  const [provinceId, setProvinceId] = useState(null);
+  const [phone, setPhone] = useState('');
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
@@ -43,21 +39,19 @@ const Signup = () => {
   const SubmitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
       const formattedDateOfBirth = formatDate(dateOfBirth);
-      
+
       let city = region?.find((e) => e.id === cityId);
       let province = data?.find((e) => e.id === provinceId);
-      
-      // First, check if passwords match and handle the error
+
       if (password !== rePassword) {
         setError("Parollar mos emas");
-        console.log(error);
-        return; // Exit the function if passwords don't match
+        setLoading(false);
+        return;
       }
 
-      // Then, proceed with the PostData call
       await PostData(
         "/api/users/",
         {
@@ -74,15 +68,49 @@ const Signup = () => {
         token
       );
       setLoading(false);
-      navigate('/login')
-
+      navigate('/login');
     } catch (err) {
       setLoading(false);
       console.log(err);
     }
   };
+
+  const datas = {};
+
+  const loginWithGoogle = async () => {
+    try {
+      const response = await fetch(`${URL}/accounts/google/login/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datas),
+      });
+      if (!response.ok) {
+        throw new Error('Server error: ' + response.status);
+      }
+      const data = await response.json();
+      console.log('Google orqali kirish muvaffaqiyatli amalga oshgan:', data);
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
   
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await loginWithGoogle();
+      // Muvaffaqiyatli ro'yxatdan o'tishdan so'ng kerak bo'lgan har qanday qadamlar
+    } catch (error) {
+      console.error('Google orqali ro\'yxatdan o\'tishda xatolik:', error);
+      // Xatolik holatida kerak bo'lgan har qanday qadamlar
+    }
+  };
   
+
 
   return (
     <>
@@ -104,13 +132,13 @@ const Signup = () => {
               display: "flex",
               justifyContent: "center",
               margin: "0 auto",
-              width: '100px',
+              width: '180px',
             }}
             src={Logo}
             alt=""
           />
         </Link>
-        <Form style={{}} onSubmit={SubmitHandler}>
+        <Form onSubmit={SubmitHandler}>
           <div className="form-inputs">
             <Form.Group
               className="mb-3"
@@ -188,7 +216,7 @@ const Signup = () => {
               >
                 <option>Viloyat</option>
                 {region?.map((e, k) => (
-                  <option value={e?.id}>
+                  <option key={k} value={e?.id}>
                     {e?.name_uz}
                   </option>
                 ))}
@@ -207,15 +235,12 @@ const Signup = () => {
                 aria-label="Default select example"
               >
                 <option>Shahar</option>
-
-                {data?.map((e) => (
-                  <>
-                    {e.region_id === cityId && (
-                      <option value={e?.id}>
-                        {e?.name_uz}
-                      </option>
-                    )}
-                  </>
+                {data?.map((e, k) => (
+                  e.region_id === cityId && (
+                    <option key={k} value={e?.id}>
+                      {e?.name_uz}
+                    </option>
+                  )
                 ))}
               </Form.Select>
             </Form.Group>
@@ -233,28 +258,28 @@ const Signup = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              {
-                error ? (
-                    <Form.Label>Parollar mos emas</Form.Label>
-                ) : (
-                  <Form.Label>Parol</Form.Label>
-                )
-              }
-            <Form.Control
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              placeholder="••••••••"
-            />
-          </Form.Group>
+              {error ? (
+                <Form.Label style={{ color: 'red' }}>Parollar mos emas</Form.Label>
+              ) : (
+                <Form.Label>Parol</Form.Label>
+              )}
+              <Form.Control
+                required
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                placeholder="••••••••"
+              />
+            </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Parolni takrorlang</Form.Label>
-            <Form.Control
-              onChange={(e) => setRePassword(e.target.value)}
-              type="password"
-              placeholder="••••••••"
-            />
-          </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword2">
+              <Form.Label>Parolni takrorlang</Form.Label>
+              <Form.Control
+                required
+                onChange={(e) => setRePassword(e.target.value)}
+                type="password"
+                placeholder="••••••••"
+              />
+            </Form.Group>
 
             <Form.Group
               className="mb-3"
@@ -267,27 +292,14 @@ const Signup = () => {
                   className="mb-3"
                   aria-label="Default select example"
                 >
-                  <option value={"teacher"}>
-                    O'quvchi
-                  </option>
-                  <option value={"student"}>
-                    Talaba
-                  </option>
-                  <option value={"jurnalist"}>
-                    Jurnalist
-                  </option>
-                  <option value={"ecofaol"}>
-                    Eco faol
-                  </option>
-                  <option value={"volantyor"}>
-                    Volontyor
-                  </option>
-                  <option value={"worker"}>
-                    Ishchi xodim
-                  </option>
-                  <option value={"other"}>Boshqa</option>
+                  <option value="teacher">O'quvchi</option>
+                  <option value="student">Talaba</option>
+                  <option value="jurnalist">Jurnalist</option>
+                  <option value="ecofaol">Eco faol</option>
+                  <option value="volantyor">Volontyor</option>
+                  <option value="worker">Ishchi xodim</option>
+                  <option value="other">Boshqa</option>
                 </Form.Select>
-                
               ) : (
                 <Form.Control
                   required
@@ -324,9 +336,11 @@ const Signup = () => {
         <div className="otherLoginForm">
           <span id="line"></span>
           <span id="or">yoki</span>
-          <Link to="#google">
-              <img src={googleIcon} alt="" />
-          </Link>
+          <button type="submit" onClick={handleSubmit}>
+            <img src={googleIcon} alt="Google Icon" />
+            Google orqali ro'yxatdan o'tish
+          </button>
+          <Link to="http://edurent.uz/accounts/google/login/">Login</Link>
         </div>
       </div>
     </>
