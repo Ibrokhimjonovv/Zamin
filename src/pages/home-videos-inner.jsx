@@ -24,6 +24,7 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
   const [videos, setVideos] = useState(null);
   const { token, setLoading, loading } = useUserContext();
   const [error, setError] = useState('');
+  const [courseTitles, setCourseTitle] = useState([]);
   const [titles, setTitles] = useState([]);
   const [titlesLinks, setTitlesLinks] = useState([]);
   const [openIndexes, setOpenIndexes] = useState([]);
@@ -84,11 +85,30 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
       }
     };
 
-    console.log("Course-department", titles );
-    console.log("Course-part", titlesLinks );
+
+    const courseTitle = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${URL}/api/course/`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        console.log("q: ", data);
+        setCourseTitle(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    console.log("Course-title", courseTitles);
+    console.log("Course-department", titles);
+    console.log("Course-part", titlesLinks);
 
     fetchTitles();
     fetchTitlesLinks();
+    courseTitle();
   }, [setLoading]);
 
   const toggleAnswer = (index) => {
@@ -116,12 +136,21 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                   Grafik dizayner
                 </div>
                 <div className="courseHeading">
-                  <h2>“Adobe Photoshop”ni 0 dan o’rganamiz.</h2>
-                </div>
-                <div className="courseDescription">
-                  <p>
-                    Adobe Photoshop bo’yicha boshlang’ich ko’nikmalarni rivojlantirish uchun onlayn video o’quv qo’llanma! Ushbu darsda Adobe Photoshop dasturi nimaligi haqida qisqacha tushuncha, va keyingi darslarimiz uchun mundarija tuzib olamiz.
-                  </p>
+                  {
+                    courseTitles.map((courseTitle, index) => (
+                      <>
+                        <h2>
+                          {courseTitle.title}
+                        </h2>
+
+                        <div className="courseDescription">
+                          <p>
+                            {courseTitle.description}
+                          </p>
+                        </div>
+                      </>
+                    ))
+                  }
                 </div>
                 <div className="starAndView">
                   <div className="courseStars">
@@ -174,7 +203,7 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                           .filter(link => link.course_department === title.id)
                           .map((link, idx) => (
                             <Link to="#" key={idx} onClick={() => { setVideoSrc(`${link.video_link}`); handleOpen(); }}>
-                              <div> <p><span>{idx + 1}</span> {link.title} </p> <p>10:25:44</p></div>
+                              <div> <p><span>{idx + 1}</span> {link.title} </p> <p></p></div>
                             </Link>
                           ))}
                       </div>
@@ -185,12 +214,11 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
               <div className="aboutLessons">
                 <h3>What you'll learn from this lesson</h3>
                 <div className="moreLessons">
-                  <p> <img src={done} alt="" /> Create awesome animated splash screens for any Excel project such as animation with password access to a work book, loading animation.</p>
-                  <p> <img src={done} alt="" /> Create awesome animated splash screens for any Excel project such as animation with password access to a work book, loading animation.</p>
-                  <p> <img src={done} alt="" /> Create awesome animated splash screens for any Excel project such as animation with password access to a work book, loading animation.</p>
-                  <p> <img src={done} alt="" /> Create awesome animated splash screens for any Excel project such as animation with password access to a work book, loading animation.</p>
-                  <p> <img src={done} alt="" /> Create awesome animated splash screens for any Excel project such as animation with password access to a work book, loading animation.</p>
-                  <p> <img src={done} alt="" /> Create awesome animated splash screens for any Excel project such as animation with password access to a work book, loading animation.</p>
+                  {
+                    courseTitles.map((courseDes, index) => (
+                      <p> <img src={done} alt="" /> { courseDes.description }</p>
+                    ))
+                  }
                 </div>
               </div>
             </div>
