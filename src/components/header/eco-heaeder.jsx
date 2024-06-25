@@ -1,8 +1,26 @@
 import { Link } from "react-router-dom";
 import Logo2 from "../../assets/images/zamineco.png";
 import "./header.scss";
+import { useEffect, useState } from "react";
 const Header = () => {
   const location = window.location.pathname;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        const userToken = localStorage.getItem('accessToken');
+        if (userToken) {
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
+        }
+    }, []);
+
+    const handleLogout = () => {
+        // Logout funksiyasini bu yerda amalga oshiring
+        localStorage.removeItem('accessToken');
+        setIsAuthenticated(false);
+    };
+
   return (
     <div className="header">
       <div className="container d-flex justify-content-between align-items-center">
@@ -28,12 +46,16 @@ const Header = () => {
             </Link>
           </div>
           <div className="login">
-            <>
-              {/* <Link to='/login'>Kirish</Link> */}
-              <a href="#form" className="signup">
-                Ro’yxatdan o’tish
-              </a>
-            </>
+          {!isAuthenticated && <Link to="/login">Kirish</Link>}
+                        {isAuthenticated ? (
+                            <Link className="signup" to="/" onClick={handleLogout}>
+                                Chiqish
+                            </Link>
+                        ) : (
+                            <Link className="signup" to="/signup">
+                                Ro’yxatdan o’tish
+                            </Link>
+                        )}
           </div>
         </div>
       </div>

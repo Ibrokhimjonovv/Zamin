@@ -228,19 +228,17 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                       </div>
                     </li>
                   ))}
-                  {
-                    testsTitle ? (
-                      testsTitle.map((test, index) => (
-                        <div key={index + 1} id="testCc">
+                  {accessToken && (
+                    <div id="testCc">
+                      {testsTitle.map((test, index) => (
+                        <li key={index + 1}>
                           <Link to={`testing/${test.id}`}>
                             {test.title}
                           </Link>
-                        </div>
-                      ))
-                    ) : (
-                      <h1></h1>
-                    )
-                  }
+                        </li>
+                      ))}
+                    </div>
+                  )}
 
                 </ul>
               </div>
