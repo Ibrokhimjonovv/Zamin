@@ -3,8 +3,10 @@ import questionImage from '../assets/images/questionImage.png';
 import './tests.scss';
 import Header from "../components/header/eco-heaeder";
 import { URL } from '../hooks/fetchdata';
+import { useParams } from "react-router-dom";
 
 const Testing = () => {
+  const { testId } = useParams(); // testId ni olamiz
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,6 +20,8 @@ const Testing = () => {
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const totalSeconds = 1 * 60;
 
+  const [ tt, setTt ] = useState(1);
+
   useEffect(() => {
     const fetchTests = async () => {
       try {
@@ -26,7 +30,8 @@ const Testing = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setQuestions(data);
+        const sdata = data.filter(v => Number(v.test) === Number(testId));
+        setQuestions(sdata);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -35,7 +40,7 @@ const Testing = () => {
     };
 
     fetchTests();
-  }, []);
+  }, [testId]);
 
   useEffect(() => {
     const fetchChoices = async () => {
@@ -61,16 +66,16 @@ const Testing = () => {
       interval = setInterval(() => {
         setTime((prevTime) => {
           const { minutes, seconds } = prevTime;
-          console.log("Minutes:secons", minutes,":",seconds)
 
-          if (seconds === 0) {
-            console.log("Nol");
+          if (seconds === 0 || seconds === 1) {
+            console.log(seconds, "Second")
             if (minutes === 0) {
-              console.log("Min nol");
+              console.log(minutes, "minutes")
               clearInterval(interval);
               setIsActive(false);
               setResults(true);
-              console.log(results, "----");
+              console.log("Time over")
+              setCurrentQuestionIndex(null)
               return prevTime;
             } else {
               return { minutes: minutes - 1, seconds: 59 };
@@ -92,13 +97,13 @@ const Testing = () => {
   };
 
   const calculateProgress = () => {
-    const elapsedSeconds = (1 * 60) - (time.minutes * 60 + time.seconds);
+    const elapsedSeconds = totalSeconds - (time.minutes * 60 + time.seconds);
     return (elapsedSeconds / totalSeconds) * 100;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (selectedOption === null) return; // Agar variant tanlanmagan bo'lsa, hech narsa qilmaslik
+    if (selectedOption === null) return;
 
     const currentQuestion = questions[currentQuestionIndex];
     const currentChoices = choices.filter(choice => choice.question === currentQuestion?.id);
@@ -114,15 +119,19 @@ const Testing = () => {
 
     setSelectedOption(null);
 
-    if (currentQuestionIndex < questions.length) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    if (tt < questions.length) {
+      setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+    } else if(tt === questions.length){
       setResults(true);
       setIsActive(false);
-    } else {
-      console.log("Testlar yakunlandi", selectedAnswers);
+      console.log("Working")
+      setCurrentQuestionIndex(null)
     }
+    
+    // tt ni har doim 1dan oshirib boramiz
+    setTt(prevTt => prevTt + 1);
+    console.log(tt, questions.length, results)
   };
-
 
   const currentQuestion = questions[currentQuestionIndex];
   const currentChoices = choices.filter(choice => choice.question === currentQuestion?.id);
@@ -137,20 +146,32 @@ const Testing = () => {
               <h5>
                 {
                   currentQuestion ? (
-                    // <p>{currentQuestion.id}. {currentQuestion.text} </p>
                     <div id="ooo">
-                        <p>{ currentQuestion.id }.</p>
-                        <div dangerouslySetInnerHTML={{ __html: currentQuestion.text }} />
+                      <p>{currentQuestionIndex + 1}.</p>
+                      <div dangerouslySetInnerHTML={{ __html: currentQuestion.text }} />
                     </div>
                   ) : (
-                    <h3>Test yakunlandi!</h3>
+                    <h2>
+                      Test yakunlandi!
+                    </h2>
+                  )
+                }
+
+                {
+                  results && (
+                    <div className="resultsContainer">
+                      <h3>Test Natijalari</h3>
+                      <p>Umumiy savollar soni: {questions.length}</p>
+                      <p>To'g'ri javoblar soni: {Object.values(selectedAnswers).filter(answer => answer.isCorrect).length}</p>
+                      <p>Noto'g'ri javoblar soni: {Object.values(selectedAnswers).filter(answer => !answer.isCorrect).length}</p>
+                    </div>
                   )
                 }
               </h5>
             </div>
             <div className="options">
               {
-                currentChoices.length ? (
+                currentChoices.length && !results ? (
                   currentChoices.map((choice, key) => (
                     <div
                       className={`option ${selectedOption === key ? 'selected' : ''}`}
@@ -162,17 +183,7 @@ const Testing = () => {
                       </label>
                     </div>
                   ))
-                ) : (
-                    results && (
-                      <div className="resultsContainer">
-                        <h3>Test Natijalari</h3>
-                        <p>Umumiy savollar soni: {questions.length}</p>
-                        <p>To'g'ri javoblar soni: {Object.values(selectedAnswers).filter(answer => answer.isCorrect).length}</p>
-                        <p>Noto'g'ri javoblar soni: {Object.values(selectedAnswers).filter(answer => !answer.isCorrect).length}</p>
-                      </div>
-                    )
-                  
-                )
+                ) : null
               }
             </div>
           </div>
@@ -208,7 +219,7 @@ const Testing = () => {
                   </div>
                 </div>
                 <div className="allTime">
-                  Umumiy vaqt: 90 daqiqa
+                  Umumiy vaqt: 1 daqiqa
                 </div>
               </div>
             </div>
@@ -217,8 +228,8 @@ const Testing = () => {
                 {questions.map((question, index) => (
                   <div
                     className={`cubic ${index === currentQuestionIndex ? 'active' :
-                        selectedAnswers[index]?.isCorrect ? 'correct' :
-                          selectedAnswers[index] && !selectedAnswers[index]?.isCorrect ? 'incorrect' : ''
+                      selectedAnswers[index]?.isCorrect ? 'correct' :
+                        selectedAnswers[index] && !selectedAnswers[index]?.isCorrect ? 'incorrect' : ''
                       }`}
                     key={index}
                   >
@@ -228,16 +239,13 @@ const Testing = () => {
               </div>
               <div className="btn">
                 <button type="submit">
-                  {currentQuestionIndex < questions.length - 1 ? 'Keyingi' : 'Yakunlash'}
+                  {tt < questions.length ? 'Keyingi' : 'Yakunlash'}
                 </button>
               </div>
             </div>
           </div>
         </form>
-        
-
       </div>
-
     </>
   );
 };

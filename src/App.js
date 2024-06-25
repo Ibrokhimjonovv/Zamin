@@ -34,7 +34,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/tests" element={<Tests />} />
-        <Route path="/testing" element={<Testing />}/>
+        <Route path="videos/:videoId/testing/:testId" element={<Testing />} />
         { token && <Route path="/dashboard" element={<Dashboard />} /> }
       </Routes>
     </div>

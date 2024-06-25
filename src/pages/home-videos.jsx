@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import DashboardVideoCard from "../components/dashboard-video/dashboard-video-card";
-// import { useUserContext } from "../contexts/users-context";
 import { GetData } from "../hooks/fetchdata";
 
 const HomeVideos = () => {
   const [courses, setCourses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState("barchasi");
-  const [sortOrder, setSortOrder] = useState(""); // yangi state
+  const [sortOrder, setSortOrder] = useState("");
 
   const getCategories = () => {
     GetData(`/api/category/`)
@@ -22,7 +21,7 @@ const HomeVideos = () => {
   };
 
   const updateCourses = (id) => {
-    GetData(`/api/category/${id}/`)
+    GetData(id === "all" ? `/api/category/` : `/api/category/${id}/`)
       .then((data) => {
         const sortedCourses = sortCourses(data.courses, sortOrder);
         setCourses(sortedCourses);
@@ -36,9 +35,7 @@ const HomeVideos = () => {
 
   const handleActiveCategory = () => {
     setActiveCategory("barchasi");
-    if (categories.length > 0) {
-      updateCourses(categories[0].id);
-    }
+    updateCourses("all");
   };
 
   const handleCourseById = (id, name) => {
@@ -57,7 +54,6 @@ const HomeVideos = () => {
     }
     return courses;
   }
-  
 
   const handleSortChange = (e) => {
     const order = e.target.value;
@@ -70,12 +66,12 @@ const HomeVideos = () => {
   return (
     <div className="video container">
       <div className="category-sidebar">
-        <div
+        {/* <div
           onClick={handleActiveCategory}
           className={activeCategory === "barchasi" ? "category-card active" : "category-card"}
         >
           <button>Barchasi</button>
-        </div>
+        </div> */}
         {categories.length > 0 ? (
           categories.map((item) => (
             <div
@@ -92,7 +88,7 @@ const HomeVideos = () => {
       </div>
 
       <div className="helperContainer">
-        {courses.length > 0 ? (
+        {courses && courses.length > 0 ? (
           <div className="videosNavbar">
             <h5>Kurslar soni: {courses.length} ta</h5>
             <div>
@@ -108,7 +104,7 @@ const HomeVideos = () => {
           <h2></h2>
         )}
         <div className="videos load-anim">
-          {courses.length > 0 ? (
+          {courses && courses.length > 0 ? (
             courses.map((item) => <DashboardVideoCard data={item} key={item.id} />)
           ) : (
             <h2>Malumotlar yuklanmoqda</h2>

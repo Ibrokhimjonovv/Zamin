@@ -29,6 +29,7 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
   const [titlesLinks, setTitlesLinks] = useState([]);
   const [openIndexes, setOpenIndexes] = useState([]);
   const [accessToken, setAccessToken] = useState(false);
+  const [testsTitle, setTestsTitle] = useState([])
 
   const GetVideos = () => {
     setLoading(true);
@@ -61,7 +62,9 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setTitles(data);
+        let sdata = [];
+        data.forEach((v) => { if (Number(v.course) === Number(videoId)) { sdata.push(v); } });
+        setTitles(sdata);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -89,7 +92,7 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
     const courseTitle = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${URL}/api/course/`);
+        const response = await fetch(`${URL}/api/course/${videoId}/`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -106,9 +109,29 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
     console.log("Course-department", titles);
     console.log("Course-part", titlesLinks);
 
+    const testTitle = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${URL}/api/tests/`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        let cdata = [];
+        data.forEach((v) => { if (Number(v.course) === Number(videoId)) { cdata.push(v); } });
+        setTestsTitle(cdata);
+        console.log(testsTitle, '-----------------1111111111');
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchTitles();
     fetchTitlesLinks();
     courseTitle();
+    testTitle();
+
   }, [setLoading]);
 
   const toggleAnswer = (index) => {
@@ -136,21 +159,17 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                   Grafik dizayner
                 </div>
                 <div className="courseHeading">
-                  {
-                    courseTitles.map((courseTitle, index) => (
-                      <>
-                        <h2>
-                          {courseTitle.title}
-                        </h2>
+                  <div>
+                    <h2>
+                      {courseTitles.title}
+                    </h2>
 
-                        <div className="courseDescription">
-                          <p>
-                            {courseTitle.description}
-                          </p>
-                        </div>
-                      </>
-                    ))
-                  }
+                    <div className="courseDescription">
+                      <p>
+                        {courseTitles.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 <div className="starAndView">
                   <div className="courseStars">
@@ -209,16 +228,32 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                       </div>
                     </li>
                   ))}
+                  {
+                    testsTitle ? (
+                      testsTitle.map((test, index) => (
+                        <div key={index + 1} id="testCc">
+                          <Link to={`testing/${test.id}`}>
+                            {test.title}
+                          </Link>
+                        </div>
+                      ))
+                    ) : (
+                      <h1></h1>
+                    )
+                  }
+
                 </ul>
               </div>
               <div className="aboutLessons">
                 <h3>What you'll learn from this lesson</h3>
                 <div className="moreLessons">
-                  {
+                  {/* {
                     courseTitles.map((courseDes, index) => (
                       <p> <img src={done} alt="" /> { courseDes.description }</p>
                     ))
-                  }
+                  } */}
+
+                  {courseTitles.description}
                 </div>
               </div>
             </div>
