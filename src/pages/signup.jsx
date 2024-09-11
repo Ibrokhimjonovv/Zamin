@@ -11,6 +11,9 @@ import { useNavigate } from "react-router";
 import { Link } from 'react-router-dom';
 import googleIcon from '../assets/images/login/googleIcon.png';
 
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import {jwtDecode} from 'jwt-decode';  // Correct import
+
 const Signup = () => {
   const { token, setLoading, loading } = useUserContext();
   const [firstName, setFirstName] = useState('');
@@ -25,6 +28,10 @@ const Signup = () => {
   const [provinceId, setProvinceId] = useState(null);
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
+  const { setToken } = useUserContext();
+  const [user, setUser] = useState(null);
+
+
 
   const navigate = useNavigate();
 
@@ -108,6 +115,23 @@ const Signup = () => {
       console.error('Google orqali ro\'yxatdan o\'tishda xatolik:', error);
       // Xatolik holatida kerak bo'lgan har qanday qadamlar
     }
+  };
+
+  const onSuccess = (response) => {
+    console.log('Login Success:', response);
+    const decoded = jwtDecode(response.credential);
+    setUser(decoded); // Save the decoded user information
+
+    // Extract and store the access token
+    const accessToken = response.credential;
+    localStorage.setItem('accessToken', accessToken);
+    setToken(accessToken);
+
+    navigate('/');
+  };
+
+  const onFailure = (error) => {
+    console.log('Login Failed:', error);
   };
   
 
@@ -331,16 +355,24 @@ const Signup = () => {
               Ro'yxatdan o'tish
             </Button>
           </div>
+          <div className="signupContainer">
+            Akkountingiz bormi? <Link to="/login">Kirish</Link>
+          </div>
         </Form>
 
         <div className="otherLoginForm">
           <span id="line"></span>
           <span id="or">yoki</span>
-          <button type="submit" onClick={handleSubmit}>
+          {/* <button type="submit" onClick={handleSubmit}>
             <img src={googleIcon} alt="Google Icon" />
             Google orqali ro'yxatdan o'tish
           </button>
-          <Link to="http://edurent.uz/accounts/google/login/">Login</Link>
+          <Link to="http://bk.zamineducation.uz/accounts/google/login/">Allaqachon ro'yxatdan o'tganmisiz?</Link> */}
+          <GoogleLogin
+              className="google-auth"
+              onSuccess={onSuccess}
+              onFailure={onFailure}
+            />
         </div>
       </div>
     </>

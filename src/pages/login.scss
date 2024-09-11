@@ -16,17 +16,19 @@
     justify-content: center;
     flex-direction: column;
     position: relative;
+    row-gap: 25px;
+    margin-top: 16px;
 }
 
 .otherLoginForm a {
-    width: 160px;
+    // width: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid #e6f0fc;
     border-radius: 5px;
     margin-top: 20px;
-    padding: 4px 0;
+    padding: 8px 17px;
     transition: all .2s ease;
     position: relative;
 }
@@ -57,6 +59,8 @@
 
 .loginForm {
     margin-top: 30px;
+    display: flex;
+    
 }
 
 #googleFormLink {
@@ -78,6 +82,13 @@
     align-items: center;
     justify-content: center;
     height: 30px;
-    margin-top: 15px;
     gap: 5px;
+}
+
+.top {
+    margin-top: 15px;
+}
+
+.google-auth {
+    margin-top: 20px;
 }

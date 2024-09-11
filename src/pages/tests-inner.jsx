@@ -6,7 +6,7 @@ import { URL } from '../hooks/fetchdata';
 import { useParams } from "react-router-dom";
 
 const Testing = () => {
-  const { testId } = useParams(); // testId ni olamiz
+  const { testId } = useParams();
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -127,8 +127,6 @@ const Testing = () => {
       console.log("Working")
       setCurrentQuestionIndex(null)
     }
-    
-    // tt ni har doim 1dan oshirib boramiz
     setTt(prevTt => prevTt + 1);
     console.log(tt, questions.length, results)
   };

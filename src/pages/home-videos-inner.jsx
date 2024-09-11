@@ -154,10 +154,10 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
         <div className="videos-card mb-3">
           <div className="doubleContainer">
             <div className="first">
-              <div className="aboutContainer" style={{ backgroundImage: `url(${bgImage})` }}>
-                <div className="typeCourse">
+              <div className="aboutContainer" style={{ backgroundImage: `url(${courseTitles?.image})` }}>
+                {/* <div className="typeCourse">
                   Grafik dizayner
-                </div>
+                </div> */}
                 <div className="courseHeading">
                   <div>
                     <h2>
@@ -180,7 +180,8 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                     <img src={emptyStar} alt="" />
                   </div>
                   <span>
-                    4.0 (458 marta ko‘rildi)
+                    4.0 
+                    {/* (458 marta ko‘rildi) */}
                   </span>
                 </div>
                 <div className="threeInOne">
@@ -211,11 +212,11 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                 <ul className="faq">
                   {titles.map((title, index) => (
                     <li key={index}>
-                      <div className="q" onClick={() => toggleAnswer(index)}>
+                      <div className="q" >
                         <span>{title.title}</span>
-                        <span className={`arrow ${openIndexes.includes(index) ? 'arrow-rotated' : ''}`}>
+                        {/* <span className={`arrow ${openIndexes.includes(index) ? 'arrow-rotated' : ''}`}>
                           <i className='bx bx-x'></i>
-                        </span>
+                        </span> */}
                       </div>
                       <div className={`a ${openIndexes.includes(index) ? 'a-opened' : ''}`}>
                         {titlesLinks
@@ -243,7 +244,7 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                 </ul>
               </div>
               <div className="aboutLessons">
-                <h3>What you'll learn from this lesson</h3>
+                <h3>Ushbu darsdan nimani o'rganasiz</h3>
                 <div className="moreLessons">
                   {/* {
                     courseTitles.map((courseDes, index) => (
@@ -267,9 +268,9 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                       <img src={star} alt="" />
                       <img src={emptyStar} alt="" />
                     </div>
-                    <span>
+                    {/* <span>
                       4.0 (458 marta ko‘rildi)
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               </div>
@@ -278,39 +279,39 @@ const HomeVideosInner = ({ data, handleOpen, setVideoSrc }) => {
                   <img src={star} alt="" />
                   5
                   <div className="line">
-                    <span></span>
+                    <span style={{width: '100%'}}></span>
                   </div>
-                  70%
+                  100%
                 </div>
                 <div className="ratingLine">
                   <img src={star} alt="" />
                   4
                   <div className="line">
-                    <span></span>
+                    <span style={{width: '80%'}}></span>
                   </div>
-                  50%
+                  80%
                 </div>
                 <div className="ratingLine">
                   <img src={star} alt="" />
                   3
                   <div className="line">
-                    <span></span>
+                    <span style={{width: '60%'}}></span>
                   </div>
-                  40%
+                  60%
                 </div>
                 <div className="ratingLine">
                   <img src={star} alt="" />
                   2
                   <div className="line">
-                    <span></span>
+                    <span style={{width: '40%'}}></span>
                   </div>
-                  30%
+                  40%
                 </div>
                 <div className="ratingLine">
                   <img src={star} alt="" />
                   1
                   <div className="line">
-                    <span></span>
+                    <span style={{width: '20%'}}></span>
                   </div>
                   20%
                 </div>
