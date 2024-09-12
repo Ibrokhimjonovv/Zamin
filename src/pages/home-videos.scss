@@ -3,3 +3,75 @@ select {
     border-radius: 3px;
     color: #00b2b4;
 }
+
+#department {
+    margin-bottom: 10px;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+}
+
+.category-card {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 10px;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: relative;
+    color: #6E849A;
+}
+
+/* Brauzerning checkboxini berkitish */
+input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    display: none !important;
+}
+
+/* Maxsus checkboxga style berish  */
+.custom-checkbox {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    // background-color: #1D9DA0;
+    transform: translateY(-50%);
+    border-radius: 5px;
+    border: 1px solid #E6F0FC;
+}
+
+/* Sichqoncha olib borilganda orqa fon rangini o'zgartirish */
+.form-control input:hover ~ .custom-checkbox {
+    background-color: #ccc;
+}
+
+/* Checkbox tanlanganda, uning orqa fon rangini o'zgartirish */
+.form-control input:checked ~ .custom-checkbox {
+    background-color: #1D9DA0;
+    border: 1px solid #1D9DA0;
+}
+
+/* Checkbox tanlanganligini bildiruvchi belgi yaratish */
+.custom-checkbox::after {
+    left: 8px;
+    top: 4px;
+    width: 7px;
+    height: 12px;
+    border: 1px solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Tanlangan paytida belgini ko'rsatish  */
+.form-control input:checked ~ .custom-checkbox::after {
+    display: block;
+}
